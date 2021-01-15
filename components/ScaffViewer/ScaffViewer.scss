@@ -1,0 +1,16 @@
+.scaffviewer-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.scaff-column {
+  display: flex;
+  flex-direction: column-reverse;
+  justify-content: space-around;
+}
+.scaff-section {
+  display: flex;
+}
+.scaff-image {
+  display: flex;
+}
