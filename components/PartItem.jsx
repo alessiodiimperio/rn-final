@@ -1,0 +1,61 @@
+import React from "react";
+import { StyleSheet, Text, View, Image } from "react-native";
+
+export default function PartItem({ part }) {
+    return (
+        <View style={styles.container}>
+            <Image
+                style={styles.image}
+                source={part.image}
+                resizeMode="contain"
+            />
+            <View style={styles.titleContainer}>
+                <Text style={styles.title}>{part.title}</Text>
+            </View>
+            <View style={styles.qtyContainer}>
+                <Text style={styles.qty}>Pcs</Text>
+                <Text style={styles.qtyNumber}>{part.qty}</Text>
+            </View>
+        </View>
+    );
+}
+
+const styles = StyleSheet.create({
+    container: {
+        height: 150,
+        width: "100%",
+        flexDirection: "row",
+        alignItems: "center",
+        backgroundColor: "white",
+        margin: 0.5,
+    },
+    image: {
+        height: 120,
+        width: 120,
+        margin: 5,
+    },
+    titleContainer: {
+        flexDirection: "row",
+        flex: 1,
+        alignItems: "center",
+        justifyContent: "center",
+    },
+    title: {
+        fontSize: 20,
+        fontWeight: "bold",
+    },
+    qtyContainer: {
+        width:50,
+        justifyContent: "center",
+        alignItems: "center",
+        textAlign: "center",
+    },
+    qty: {
+        fontSize: 14,
+        fontWeight: "600",
+    },
+    qtyNumber: {
+        fontSize: 24,
+        fontWeight: "600",
+    },
+});

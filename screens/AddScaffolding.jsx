@@ -13,7 +13,13 @@ import {
 } from "react-native";
 import { Feather } from "@expo/vector-icons";
 import ScaffBuilder from "../calculators/ScaffBuilder";
-import { path } from "../App.js";
+import { routes } from "../Routes.js";
+
+import {
+    widthHeightExample,
+    stairTowerExample,
+    accessDeckExample,
+} from "../RequiredImages";
 
 export default function AddScaffolding({ navigation }) {
     const [title, setTitle] = useState("");
@@ -99,21 +105,17 @@ export default function AddScaffolding({ navigation }) {
         if (validFields()) {
             const scaffOptions = {
                 title,
-                height,
-                width,
+                height: parseInt(height),
+                width: parseFloat(width),
                 stairs,
                 ladders,
                 farfromwall: false,
             };
 
-            let scaffold = ScaffBuilder.getScaffoldingObject(scaffOptions);
-            navigation.navigate(path.detail);
+            let scaffolding = ScaffBuilder.getScaffoldingObject(scaffOptions);
+            navigation.navigate(routes.detail, { scaffolding });
         }
     };
-
-    const widthHeightExample = require("../assets/OptionsImages/scaffexample.jpg");
-    const stairTowerExample = require("../assets/OptionsImages/has-stairs.jpg");
-    const accessDeckExample = require("../assets/OptionsImages/has-ladder.jpg");
 
     return (
         <KeyboardAvoidingView

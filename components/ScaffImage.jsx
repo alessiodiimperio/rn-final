@@ -1,6 +1,7 @@
-import "./ScaffImage.scss";
 import React from "react";
-import {Image} from 'semantic-ui-react'
+import { StyleSheet, Image, View } from "react-native";
+import { getSectionImage } from "../RequiredImages";
+
 function ScaffImage({
     section,
     totalSections,
@@ -10,6 +11,7 @@ function ScaffImage({
     levelsWithPlatforms,
     hasStairs,
     hasLadders,
+    size,
 }) {
     //Magic Numbers to words with meaning
     const bottomLevel = 1;
@@ -59,7 +61,8 @@ function ScaffImage({
             (!hasStairs &&
                 section === firstSection &&
                 !hasLadders &&
-                section === lastSection) ||
+                section === lastSection &&
+                level > topLevel - levelsWithPlatforms) ||
             (section !== firstSection &&
                 section !== lastSection &&
                 level > topLevel - levelsWithPlatforms)
@@ -68,15 +71,16 @@ function ScaffImage({
         }
     }
 
+    const imageName = imageSRC + ".png";
+    const image = getSectionImage(imageName);
+    console.log(imageName);
+
     return (
-        <div className="scaff-image-container">
-            <Image
-                className="scaff-image"
-                src={`/images/ScaffSectionImages/${imageSRC}.png`}
-                alt="Section of scaffolding"
-                size="tiny"
-            />
-        </div>
+        <Image
+            style={{ height: size.height, width: size.width }}
+            source={image}
+            resizeMode="contain"
+        />
     );
 }
 

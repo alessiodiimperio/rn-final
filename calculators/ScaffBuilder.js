@@ -16,11 +16,12 @@ const strings = {
     parts_toeboards307cm_title: "Toeboard",
     parts_toeboards73cm_title: "Short toeboard",
     parts_toeboard_connectors: "Toeboard connector",
+    parts_toeboard_brackets_title: "Toebard brackets",
     parts_base_plates_title: "Baseplate",
     parts_deck_retainers_title: "Deck retainer",
     parts_couplers_fixed_title: "Fixed coupler",
     parts_couplers_swivel_title: "Swivel coupler",
-    parts_anchors_title: "Anchors (Scaffold tie + Eyebolt)",
+    parts_anchors_title: "Anchors - Scaffoldtie & Eyebolt",
     parts_scaffolding_pallets_title: "Stacking pallets",
     parts_lattice_girders300cm_title: "Lattice girder 3m",
     parts_lattice_girders400cm_title: "Lattice girder 4m",
@@ -82,7 +83,7 @@ class ScaffBuilder {
         const startingCollars = {
             tag: "starting_collars",
             title: strings.parts_starting_collars_title,
-            image: "/images/DetailThumbnails/startkrans.png",
+            image: require("../assets/DetailThumbnails/startkrans.png"),
             qty: scaffolding.starting_collars,
             unit_kg_weight: 1.5,
         };
@@ -92,7 +93,7 @@ class ScaffBuilder {
         const basePlates = {
             tag: "base_plates",
             title: strings.parts_base_plates_title,
-            image: "/images/DetailThumbnails/bottenskruv.png",
+            image: require("../assets/DetailThumbnails/bottenskruv.png"),
             qty: scaffolding.base_plates,
             unit_kg_weight: 4.3,
         };
@@ -102,7 +103,7 @@ class ScaffBuilder {
         const standards100Cm = {
             tag: "standards100cm",
             title: strings.parts_standards100cm_title,
-            image: "/images/DetailThumbnails/spira.png",
+            image: require("../assets/DetailThumbnails/spira.png"),
             qty: scaffolding.standards100cm,
             unit_kg_weight: 5.4,
         };
@@ -112,7 +113,7 @@ class ScaffBuilder {
         const standards200Cm = {
             tag: "standards200cm",
             title: strings.parts_standards200cm_title,
-            image: "/images/DetailThumbnails/spira.png",
+            image: require("../assets/DetailThumbnails/spira.png"),
             qty: scaffolding.standards200cm,
             unit_kg_weight: 9.9,
         };
@@ -122,7 +123,7 @@ class ScaffBuilder {
         const standards300Cm = {
             tag: "standards300cm",
             title: strings.parts_standards300cm_title,
-            image: "/images/DetailThumbnails/spira.png",
+            image: require("../assets/DetailThumbnails/spira.png"),
             qty: scaffolding.standards300cm,
             unit_kg_weight: 14.4,
         };
@@ -132,7 +133,7 @@ class ScaffBuilder {
         const ledgers207Cm = {
             tag: "ledgers207cm",
             title: strings.parts_ledgers207cm_title,
-            image: "/images/DetailThumbnails/langbalk.png",
+            image: require("../assets/DetailThumbnails/langbalk.png"),
             qty: scaffolding.ledgers207cm,
             unit_kg_weight: 7.2,
         };
@@ -142,7 +143,7 @@ class ScaffBuilder {
         const ledgers307Cm = {
             tag: "ledgers307cm",
             title: strings.parts_ledgers307cm_title,
-            image: "/images/DetailThumbnails/langbalk.png",
+            image: require("../assets/DetailThumbnails/langbalk.png"),
             qty: scaffolding.ledgers307cm,
             unit_kg_weight: 10.3,
         };
@@ -153,7 +154,7 @@ class ScaffBuilder {
         const ledgers73Cm = {
             tag: "ledgers73cm",
             title: strings.parts_ledgers73cm_title,
-            image: "/images/DetailThumbnails/kortbalk.png",
+            image: require("../assets/DetailThumbnails/kortbalk.png"),
             qty: scaffolding.ledgers73cm,
             unit_kg_weight: 3,
         };
@@ -163,7 +164,7 @@ class ScaffBuilder {
         const uSupports = {
             tag: "usupports",
             title: strings.parts_u_supports_title,
-            image: "/images/DetailThumbnails/ukortbalk.png",
+            image: require("../assets/DetailThumbnails/ukortbalk.png"),
             qty: scaffolding.u_supports73cm,
             unit_kg_weight: 3.1,
         };
@@ -173,7 +174,7 @@ class ScaffBuilder {
         const verticalBraces = {
             tag: "verticalbraces",
             title: strings.parts_vertical_braces_title,
-            image: "/images/DetailThumbnails/diagonal.png",
+            image: require("../assets/DetailThumbnails/diagonal.png"),
             qty: scaffolding.vertical_braces,
             unit_kg_weight: 20.1,
         };
@@ -183,7 +184,7 @@ class ScaffBuilder {
         const steelDecks = {
             tag: "steeldecks",
             title: strings.parts_steeldecks_title,
-            image: "/images/DetailThumbnails/stalplank.png",
+            image: require("../assets/DetailThumbnails/stalplank.png"),
             qty: scaffolding.steeldecks,
             unit_kg_weight: 20.1,
         };
@@ -193,7 +194,7 @@ class ScaffBuilder {
         const accessDecks = {
             tag: "accessdecks",
             title: strings.parts_accessdecks_title,
-            image: "/images/DetailThumbnails/ladders.png",
+            image: require("../assets/DetailThumbnails/ladders.png"),
             qty: scaffolding.accessdecks,
             unit_kg_weight: 28.5,
         };
@@ -203,7 +204,7 @@ class ScaffBuilder {
         const toeBoards307Cm = {
             tag: "toeboards307cm",
             title: strings.parts_toeboards307cm_title,
-            image: "/images/DetailThumbnails/sparklist.png",
+            image: require("../assets/DetailThumbnails/sparklist.png"),
             qty: scaffolding.toeboards307cm,
             unit_kg_weight: 5.9,
         };
@@ -213,7 +214,7 @@ class ScaffBuilder {
         const toeBoards73Cm = {
             tag: "toeboards73cm",
             title: strings.parts_toeboards73cm_title,
-            image: "/images/DetailThumbnails/andsparklist.png",
+            image: require("../assets/DetailThumbnails/andsparklist.png"),
             qty: scaffolding.toeboards73cm,
             unit_kg_weight: 1.6,
         };
@@ -223,7 +224,7 @@ class ScaffBuilder {
         const toeBoardBrackets = {
             tag: "toeboard_brackets",
             title: strings.parts_toeboard_brackets_title,
-            image: "/images/DetailThumbnails/sparklistkonsol.png",
+            image: require("../assets/DetailThumbnails/sparklistkonsol.png"),
             qty: scaffolding.toeboard_brackets,
             unit_kg_weight: 1.1,
         };
@@ -233,7 +234,7 @@ class ScaffBuilder {
         const anchors = {
             tag: "anchors",
             title: strings.parts_anchors_title,
-            image: "/images/DetailThumbnails/ankare.png",
+            image: require("../assets/DetailThumbnails/ankare.png"),
             qty: scaffolding.anchors,
             unit_kg_weight: 4.0,
         };
@@ -243,7 +244,7 @@ class ScaffBuilder {
         const couplersSwivel = {
             tag: "coupler_swivel",
             title: strings.parts_couplers_swivel_title,
-            image: "/images/DetailThumbnails/vridkoppling.png",
+            image: require("../assets/DetailThumbnails/vridkoppling.png"),
             qty: scaffolding.couplers_swivel,
             unit_kg_weight: 1.2,
         };
@@ -253,7 +254,7 @@ class ScaffBuilder {
         const couplersFixed = {
             tag: "coupler_fixed",
             title: strings.parts_couplers_fixed_title,
-            image: "/images/DetailThumbnails/fastkoppling.png",
+            image: require("../assets/DetailThumbnails/fastkoppling.png"),
             qty: scaffolding.couplers_fixed,
             unit_kg_weight: 1,
         };
@@ -263,7 +264,7 @@ class ScaffBuilder {
         const staircase = {
             tag: "staircase",
             title: strings.parts_staircases_title,
-            image: "/images/DetailThumbnails/stairs.png",
+            image: require("../assets/DetailThumbnails/stairs.png"),
             qty: scaffolding.staircases,
             unit_kg_weight: 32.5,
         };
@@ -273,7 +274,7 @@ class ScaffBuilder {
         const stairCaseGuardRails = {
             tag: "staircase_guardrails",
             title: strings.parts_staircase_guardrails_title,
-            image: "/images/DetailThumbnails/handledare.png",
+            image: require("../assets/DetailThumbnails/handledare.png"),
             qty: scaffolding.staircase_guardrails,
             unit_kg_weight: 12.2,
         };
@@ -283,7 +284,7 @@ class ScaffBuilder {
         const spigotCoupler = {
             tag: "spigot_coupler",
             title: strings.parts_spigot_coupler_title,
-            image: "/images/DetailThumbnails/spirstart.png",
+            image: require("../assets/DetailThumbnails/spirstart.png"),
             qty: scaffolding.spigot_coupler,
             unit_kg_weight: 1.6,
         };
@@ -293,7 +294,7 @@ class ScaffBuilder {
         const scaffoldPallets = {
             tag: "scaff_pallets",
             title: strings.parts_scaffolding_pallets_title,
-            image: "/images/DetailThumbnails/stallningshack.png",
+            image: require("../assets/DetailThumbnails/stallningshack.png"),
             qty: scaffolding.scaffolding_pallets,
             unit_kg_weight: 33.6,
         };
