@@ -3,16 +3,18 @@ import { StyleSheet, Text, View } from "react-native";
 import { FlatList } from "react-native-gesture-handler";
 import ScaffoldListItem from "./ScaffoldListItem";
 
-export default function ScaffoldingList({ scaffoldings, isEditing }) {
-    const [selected, setSelected] = useState();
-
+export default function ScaffoldingList({ isEditing, scaffoldings }) {
     return (
         <View style={styles.container}>
             <FlatList
                 style={styles.list}
                 data={scaffoldings}
                 renderItem={({ item }) => (
-                    <ScaffoldListItem key={item.id} item={item} isEditing={isEditing} />
+                    <ScaffoldListItem
+                        key={item.id}
+                        item={item}
+                        isEditing={isEditing}
+                    />
                 )}
                 ItemSeparatorComponent={() => (
                     <View

@@ -13,7 +13,10 @@ import {
 } from "react-native";
 import { Feather } from "@expo/vector-icons";
 import ScaffBuilder from "../calculators/ScaffBuilder";
+import CustomButton from "../components/CustomButton";
 import { routes } from "../Routes.js";
+import { useStateValue } from "../StateProvider";
+import { action } from "../Actions";
 
 import {
     widthHeightExample,
@@ -22,6 +25,7 @@ import {
 } from "../RequiredImages";
 
 export default function AddScaffolding({ navigation }) {
+    const [{ scaffoldings }, dispatch] = useStateValue();
     const [title, setTitle] = useState("");
     const [titleError, setTitleError] = useState("");
     const [height, setHeight] = useState("");
@@ -113,6 +117,10 @@ export default function AddScaffolding({ navigation }) {
             };
 
             let scaffolding = ScaffBuilder.getScaffoldingObject(scaffOptions);
+            dispatch({
+                action: action.addScaffolding,
+                payload: scaffolding,
+            });
             navigation.navigate(routes.detail, { scaffolding });
         }
     };
@@ -239,19 +247,7 @@ export default function AddScaffolding({ navigation }) {
                             />
                         </View>
                     </View>
-                    <TouchableOpacity onPress={handleCreate}>
-                        <View style={styles.createBtn}>
-                            <Text
-                                style={{
-                                    color: "purple",
-                                    fontSize: 20,
-                                    fontWeight: "600",
-                                }}
-                            >
-                                Create
-                            </Text>
-                        </View>
-                    </TouchableOpacity>
+                    <CustomButton title="Create" onPress={handleCreate} />
                 </ScrollView>
             </View>
         </KeyboardAvoidingView>
@@ -294,7 +290,7 @@ const styles = StyleSheet.create({
     },
     formFieldTxt: {
         color: "white",
-        fontSize: 16,
+        fontSize: 14,
         fontWeight: "600",
         padding: 5,
         paddingLeft: 20,
@@ -320,17 +316,6 @@ const styles = StyleSheet.create({
         width: "100%",
         justifyContent: "center",
         alignItems: "center",
-    },
-    createBtn: {
-        height: 40,
-        width: 150,
-        borderRadius: 16,
-        borderWidth: 1,
-        borderColor: "purple",
-        justifyContent: "center",
-        alignItems: "center",
-        margin: 10,
-        marginBottom: 50,
     },
     formSwitch: {
         paddingTop: 10,
