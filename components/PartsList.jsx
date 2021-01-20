@@ -1,17 +1,24 @@
 import React from "react";
 import { StyleSheet, FlatList, Text, View } from "react-native";
+import ScaffViewer from "../components/ScaffViewer";
 import PartItem from './PartItem'
+import PartsInformation from "../components/PartsInformation";
 
-export default function PartsList({ scaffolding }) {
-    const { parts } = scaffolding;
+export default function PartsList({ scaffolding, ids }) {
 
     return (
         <View style={styles.container}>
             <FlatList
                 style={styles.list}
-                data={parts}
+                data={scaffolding.parts}
                 keyExtractor={(item) => item.title}
                 renderItem={({ item }) => <PartItem part={item} />}
+                ListHeaderComponent={
+                    ids.length < 2 && <ScaffViewer scaffolding={scaffolding} />
+                }
+                ListFooterComponent={
+                    <PartsInformation parts={scaffolding.parts} />
+                }
             />
         </View>
     );

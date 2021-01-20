@@ -5,10 +5,14 @@ import ScaffImage from "./ScaffImage";
 function ScaffViewer({ scaffolding }) {
     const sectionWidth = 3.07;
     const sectionHeight = 2;
-    const totalSections = scaffolding.width / sectionWidth;
-    const totalLevels = parseInt(
-        (scaffolding.height + sectionHeight) / sectionHeight
-    );
+    const totalSections = isNaN(scaffolding?.width / sectionWidth)
+        ? 3
+        : scaffolding?.width / sectionWidth;
+    const totalLevels = isNaN(
+        parseInt((scaffolding?.height + sectionHeight) / sectionHeight)
+    )
+        ? 3
+        : parseInt((scaffolding?.height + sectionHeight) / sectionHeight);
     const sectionsToDraw = totalSections > 6 ? 6 : totalSections;
     const sections = [...Array(sectionsToDraw)];
     const levels = [...Array(totalLevels)];
@@ -25,10 +29,10 @@ function ScaffViewer({ scaffolding }) {
                 width: 60,
             };
         }
-    }
+    };
 
     const imgSize = getImgSize();
-    
+
     return (
         <View style={styles.container}>
             {sections.map((_, section) => {
@@ -44,8 +48,8 @@ function ScaffViewer({ scaffolding }) {
                                     level={level + 1} //remove index zero for easier readability
                                     totalLevels={totalLevels}
                                     levelsWithPlatforms={1}
-                                    hasStairs={scaffolding.stairs}
-                                    hasLadders={scaffolding.ladders}
+                                    hasStairs={scaffolding?.stairs ?? false}
+                                    hasLadders={scaffolding?.ladders ?? false}
                                     size={imgSize}
                                 />
                             );
@@ -64,7 +68,6 @@ const styles = StyleSheet.create({
         flexDirection: "row",
         justifyContent: "center",
         alignItems: "center",
-        backgroundColor: "white",
         paddingVertical: 20,
         marginBottom: 0.25,
     },

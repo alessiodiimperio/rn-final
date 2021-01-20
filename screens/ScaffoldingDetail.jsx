@@ -1,41 +1,59 @@
 import React from "react";
-import {
-    StyleSheet,
-    Text,
-    View,
-    TouchableOpacity,
-    ScrollView,
-} from "react-native";
-import ScaffViewer from "../components/ScaffViewer";
+import { StyleSheet, Text, View, TouchableOpacity } from "react-native";
 import PartsList from "../components/PartsList";
+import PartsInformation from "../components/PartsInformation";
+import { useStateValue } from "../StateProvider";
 import { Feather } from "@expo/vector-icons";
 
 export default function ScaffoldingDetail({ route, navigation }) {
-    const { scaffolding } = route.params;
+    const { ids } = route.params;
+    const [{ scaffoldings }, dispatch] = useStateValue();
+
+    const reduceScaffolding = () => {
+        if (ids.length > 1) {
+            let parts = [];
+            let scaffolding;
+
+            ids.forEach((id) => {
+                const scaffold = scaffoldings.find(
+                    (scaffold) => scaffold.id == id
+                );
+                scaffold.parts.forEach((part) => {
+                    if (parts.some((item) => item.tag === part.tag)) {
+                        let index = parts.findIndex(
+                            (item) => item.tag === part.tag
+                        );
+                        parts[index].qty += part.qty;
+                    } else {
+                        parts.push(part);
+                    }
+                });
+                scaffolding = scaffold;
+            });
+            return { ...scaffolding, parts };
+        } else {
+            return scaffoldings.find(
+                (scaffold) => scaffold.id == ids.find((id) => true)
+            );
+        }
+    };
+
+    const scaffolding = reduceScaffolding();
+
     const onBack = () => {
         navigation.popToTop();
     };
+
     return (
         <View style={styles.container}>
             <View style={styles.content}>
                 <View style={styles.header}>
                     <TouchableOpacity style={styles.backBtn} onPress={onBack}>
-                        <Feather name="chevron-left" size={24} color="purple" />
-                        <Text
-                            style={{
-                                color: "purple",
-                                fontSize: 20,
-                                fontWeight: "bold",
-                            }}
-                        >
-                            Back
-                        </Text>
+                        <Feather name="chevron-left" size={24} color="white" />
+                        <Text style={styles.headerTitle}>Back</Text>
                     </TouchableOpacity>
                 </View>
-                <ScrollView style={styles.scrollview}>
-                    <ScaffViewer scaffolding={scaffolding} />
-                    <PartsList scaffolding={scaffolding} />
-                </ScrollView>
+                <PartsList scaffolding={scaffolding} ids={ids} />
             </View>
         </View>
     );
@@ -47,22 +65,25 @@ const styles = StyleSheet.create({
         width: "100%",
         justifyContent: "center",
         alignItems: "center",
-        backgroundColor: "purple",
     },
     content: {
         flex: 0.9,
         width: "100%",
         justifyContent: "flex-start",
         alignItems: "center",
-        backgroundColor: "purple",
     },
     header: {
         height: 100,
-        backgroundColor: "white",
+        backgroundColor: "purple",
         width: "100%",
         justifyContent: "center",
-        borderColor:'purple',
-        borderBottomWidth:1,
+        borderColor: "purple",
+        borderBottomWidth: 1,
+    },
+    headerTitle: {
+        color: "white",
+        fontSize: 20,
+        fontWeight: "bold",
     },
     backBtn: {
         left: 20,

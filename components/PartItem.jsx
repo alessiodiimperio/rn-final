@@ -27,7 +27,9 @@ const styles = StyleSheet.create({
         flexDirection: "row",
         alignItems: "center",
         backgroundColor: "white",
-        margin: 0.5,
+        borderColor:'purple',
+        borderTopWidth:0.5,
+        borderBottomWidth:0.5,
     },
     image: {
         height: 120,

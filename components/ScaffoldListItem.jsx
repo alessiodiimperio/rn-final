@@ -1,19 +1,26 @@
 import React from "react";
 import { StyleSheet, Text, View, Image, Alert } from "react-native";
 import { Feather } from "@expo/vector-icons";
-import { FontAwesome5 } from "@expo/vector-icons";
 import {
     TouchableHighlight,
     TouchableOpacity,
 } from "react-native-gesture-handler";
+import { routes } from '../Routes'
+import { useNavigation } from "@react-navigation/native";
 
-export default function ScaffoldListItem({ item, isEditing }) {
-    const onPress = () => {
-        console.log("list item pressed");
+export default function ScaffoldListItem({
+    item,
+    isEditing,
+    handleDelete,
+}) {
+    const navigation = useNavigation();
+
+    const onPress = (id) => {
+        navigation.navigate(routes.detail, { ids: [id] });
     };
-    const onDelete = () => {
+    const onDelete = (id) => {
         Alert.alert("Delete", "Are you sure you want to delete?", [
-            { text: "Delete", onPress: () => console.log("deleting") },
+            { text: "Delete", onPress: () => handleDelete(id) },
             { text: "Cancel" },
         ]);
     };
@@ -21,7 +28,7 @@ export default function ScaffoldListItem({ item, isEditing }) {
     return (
         <TouchableHighlight
             style={styles.container}
-            onPress={isEditing ? null : onPress}
+            onPress={isEditing ? null : () => onPress(item.id)}
             underlayColor="#CFB7EA"
         >
             <>
@@ -36,7 +43,7 @@ export default function ScaffoldListItem({ item, isEditing }) {
                 </Text>
                 <View style={styles.optiosContainer}>
                     {isEditing && (
-                        <TouchableOpacity onPress={onDelete}>
+                        <TouchableOpacity onPress={() => onDelete(item.id)}>
                             <Feather
                                 style={{
                                     ...styles.trash,

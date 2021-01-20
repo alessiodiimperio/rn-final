@@ -5,8 +5,6 @@ import { Feather } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 import { routes } from "../Routes";
 
-//Todo: Add useNavigation hook
-
 export default function Header({ isEditing, onEdit }) {
     const navigation = useNavigation();
 

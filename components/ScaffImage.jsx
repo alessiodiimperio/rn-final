@@ -73,8 +73,6 @@ function ScaffImage({
 
     const imageName = imageSRC + ".png";
     const image = getSectionImage(imageName);
-    console.log(imageName);
-
     return (
         <Image
             style={{ height: size.height, width: size.width }}

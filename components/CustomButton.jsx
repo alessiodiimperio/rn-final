@@ -21,10 +21,11 @@ const styles = StyleSheet.create({
         borderRadius: 16,
         borderWidth: 1,
         borderColor: "purple",
+        backgroundColor:'white',
         justifyContent: "center",
         alignItems: "center",
         margin: 10,
-        marginBottom: 50,
+        marginBottom: 30,
     },
     btnTxt: {
         color: "purple",

@@ -1,9 +1,13 @@
-import React, { useState } from "react";
-import { StyleSheet, Text, View } from "react-native";
+import React from "react";
+import { StyleSheet, View } from "react-native";
 import { FlatList } from "react-native-gesture-handler";
 import ScaffoldListItem from "./ScaffoldListItem";
 
-export default function ScaffoldingList({ isEditing, scaffoldings }) {
+export default function ScaffoldingList({
+    isEditing,
+    scaffoldings,
+    handleDelete,
+}) {
     return (
         <View style={styles.container}>
             <FlatList
@@ -14,26 +18,11 @@ export default function ScaffoldingList({ isEditing, scaffoldings }) {
                         key={item.id}
                         item={item}
                         isEditing={isEditing}
+                        handleDelete={handleDelete}
                     />
                 )}
-                ItemSeparatorComponent={() => (
-                    <View
-                        style={{
-                            width: "100%",
-                            height: 1,
-                            backgroundColor: "purple",
-                        }}
-                    />
-                )}
-                footer={() => (
-                    <View
-                        style={{
-                            width: "100%",
-                            height: 1,
-                            backgroundColor: "purple",
-                        }}
-                    />
-                )}
+                ItemSeparatorComponent={() => <View style={styles.separator} />}
+                footer={() => <View style={styles.separator} />}
             />
         </View>
     );
@@ -48,5 +37,10 @@ const styles = StyleSheet.create({
     list: {
         width: "100%",
         flex: 1,
+    },
+    separator: {
+        width: "100%",
+        height: 1,
+        backgroundColor: "purple",
     },
 });

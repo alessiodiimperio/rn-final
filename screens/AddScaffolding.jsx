@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-
 import {
     ScrollView,
     Switch,
@@ -14,18 +13,18 @@ import {
 import { Feather } from "@expo/vector-icons";
 import ScaffBuilder from "../calculators/ScaffBuilder";
 import CustomButton from "../components/CustomButton";
+import ScaffViewer from '../components/ScaffViewer'
 import { routes } from "../Routes.js";
 import { useStateValue } from "../StateProvider";
 import { action } from "../Actions";
 
 import {
-    widthHeightExample,
     stairTowerExample,
     accessDeckExample,
 } from "../RequiredImages";
 
 export default function AddScaffolding({ navigation }) {
-    const [{ scaffoldings }, dispatch] = useStateValue();
+    const [_, dispatch] = useStateValue();
     const [title, setTitle] = useState("");
     const [titleError, setTitleError] = useState("");
     const [height, setHeight] = useState("");
@@ -119,9 +118,9 @@ export default function AddScaffolding({ navigation }) {
             let scaffolding = ScaffBuilder.getScaffoldingObject(scaffOptions);
             dispatch({
                 action: action.addScaffolding,
-                payload: scaffolding,
+                scaffold: scaffolding,
             });
-            navigation.navigate(routes.detail, { scaffolding });
+            navigation.navigate(routes.detail, { ids:[scaffolding.id] });
         }
     };
 
@@ -146,11 +145,7 @@ export default function AddScaffolding({ navigation }) {
                     </TouchableOpacity>
                 </View>
                 <ScrollView contentContainerStyle={styles.form}>
-                    <Image
-                        resizeMode="contain"
-                        style={styles.sizingExampleImg}
-                        source={widthHeightExample}
-                    />
+                    <ScaffViewer />
                     <View style={styles.formField}>
                         <Text style={styles.formFieldTxt}>Project title:</Text>
                         <TextInput

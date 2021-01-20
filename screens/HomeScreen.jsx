@@ -1,10 +1,11 @@
-import React, { useState } from "react";
-import { StyleSheet, View, Text } from "react-native";
+import React, { useState, useEffect } from "react";
+import { StyleSheet, View } from "react-native";
 import Header from "../components/Header";
 import ScaffoldingList from "../components/ScaffoldingList";
-import CustomButton from '../components/CustomButton'
-import { useStateValue } from '../StateProvider'
-import { routes } from '../Routes'
+import CustomButton from "../components/CustomButton";
+import { useStateValue } from "../StateProvider";
+import { routes } from "../Routes";
+import { action } from "../Actions";
 
 export default function HomeScreen({ navigation }) {
     const [{ scaffoldings }, dispatch] = useStateValue();
@@ -14,20 +15,26 @@ export default function HomeScreen({ navigation }) {
         setIsEditing((prev) => !prev);
     };
 
-    const displayTot = () => {
-        const total = {}; 
-        /* scaffoldings.forEach((scaffold) => {
-            for (let [key, value] of Object.entries(scaffold)) {
-                if (total[key] && typeof total[key] == Number) {
-                    result[key] += value;
-                } else {
-                    result[key] = value;
-                }
-            }
-        }); */
-        console.log(total)
+    const handleDelete = (id) => {
+        dispatch({
+            action: action.deleteScaffolding,
+            id,
+        });
     };
 
+    const displayTotal = () => {
+        const ids = [];
+        scaffoldings.forEach((scaffold) => {
+            ids.push(scaffold.id);
+        });
+        navigation.navigate(routes.detail, { ids });
+    };
+
+    useEffect(() => {
+        if (scaffoldings.length == 0) {
+            setIsEditing(false);
+        }
+    }, [scaffoldings]);
 
     return (
         <View style={styles.container}>
@@ -36,8 +43,11 @@ export default function HomeScreen({ navigation }) {
                 <ScaffoldingList
                     scaffoldings={scaffoldings}
                     isEditing={isEditing}
+                    handleDelete={(id) => handleDelete(id)}
                 />
-                <CustomButton title="Get Total" onPress={displayTot} />
+                {scaffoldings.length > 1 && (
+                    <CustomButton title="Get Total" onPress={displayTotal} />
+                )}
             </View>
         </View>
     );
@@ -52,6 +62,6 @@ const styles = StyleSheet.create({
     content: {
         flex: 0.9,
         width: "100%",
-        alignItems:'center',
+        alignItems: "center",
     },
 });
