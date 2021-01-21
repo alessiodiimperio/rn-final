@@ -2,12 +2,12 @@ import React from "react";
 import { StyleSheet, Text, View, TouchableOpacity } from "react-native";
 import PartsList from "../components/PartsList";
 import PartsInformation from "../components/PartsInformation";
-import { useStateValue } from "../StateProvider";
+import { useScaffold } from "../ScaffProvider/ScaffoldProvider";
 import { Feather } from "@expo/vector-icons";
 
 export default function ScaffoldingDetail({ route, navigation }) {
     const { ids } = route.params;
-    const [{ scaffoldings }, dispatch] = useStateValue();
+    const [{ scaffoldings }, dispatch] = useScaffold();
 
     const reduceScaffolding = () => {
         if (ids.length > 1) {

@@ -13,114 +13,50 @@ import {
 import { Feather } from "@expo/vector-icons";
 import ScaffBuilder from "../calculators/ScaffBuilder";
 import CustomButton from "../components/CustomButton";
-import ScaffViewer from '../components/ScaffViewer'
+import ScaffViewer from "../components/ScaffViewer";
 import { routes } from "../Routes.js";
-import { useStateValue } from "../StateProvider";
-import { action } from "../Actions";
-
-import {
-    stairTowerExample,
-    accessDeckExample,
-} from "../RequiredImages";
+import { useScaffold } from "../ScaffProvider/ScaffoldProvider";
+import { useForm } from "../FormHook/useForm";
+import { action, field } from "../Actions";
+import { stairTowerExample, accessDeckExample } from "../RequiredImages";
 
 export default function AddScaffolding({ navigation }) {
-    const [_, dispatch] = useStateValue();
-    const [title, setTitle] = useState("");
-    const [titleError, setTitleError] = useState("");
-    const [height, setHeight] = useState("");
-    const [heightError, setHeightError] = useState("");
-    const [width, setWidth] = useState("");
-    const [widthError, setWidthError] = useState("");
-    const [stairs, setStairs] = useState(false);
-    const [ladders, setLadders] = useState(false);
+    const [_, dispatch] = useScaffold();
+    const [form, formHandler] = useForm();
+    const [missingFields, setMissingFields] = useState(false);
 
     const onBack = () => {
         navigation.goBack();
     };
 
-    const toggleStairs = () => setStairs((prev) => !prev);
-    const toggleLadders = () => setLadders((prev) => !prev);
-
-    const validateTitle = () => {
-        if (!title) {
-            setTitleError("Title can not be empty!");
-            return false;
-        } else {
-            setTitleError("");
-            return true;
-        }
-    };
-
-    const validateHeight = () => {
-        const validInt = parseInt(height);
-
-        if (validInt == 0 || isNaN(validInt)) {
-            setHeightError(`${height} is not valid input...`);
-            setHeight("");
-            return false;
-        } else {
-            setHeightError("");
-            if (validInt < 2) {
-                setHeight("2");
-            } else if (validInt > 10) {
-                setHeight("10");
-            } else {
-                setHeight(validInt.toString());
-            }
-            return true;
-        }
-    };
-
-    const validateWidth = () => {
-        const validFloat = parseFloat(width);
-
-        if (validFloat == 0 || isNaN(validFloat)) {
-            setWidthError(`${width} is not valid input...`);
-            setWidth("");
-            return false;
-        } else {
-            setWidthError("");
-
-            if (validFloat < 3.07) {
-                setWidth("3.07");
-            } else if (validFloat > 30.7) {
-                setWidth("30.7");
-            } else {
-                const closestValidWidth = Math.ceil(validFloat / 3.07) * 3.07;
-                setWidth(closestValidWidth.toString());
-            }
-            return true;
-        }
-    };
-
     const validFields = () => {
-        if (validateWidth() && validateHeight() && validateTitle()) {
+        if (form.validHeight && form.validWidth && form.validTitle) {
             return true;
         } else {
-            validateWidth();
-            validateHeight();
-            validateTitle();
             return false;
         }
     };
 
     const handleCreate = () => {
         if (validFields()) {
+            setMissingFields(false);
             const scaffOptions = {
-                title,
-                height: parseInt(height),
-                width: parseFloat(width),
-                stairs,
-                ladders,
+                title: form.title,
+                height: parseInt(form.height),
+                width: parseFloat(form.width),
+                stairs: form.stairs,
+                ladders: form.ladders,
                 farfromwall: false,
             };
 
             let scaffolding = ScaffBuilder.getScaffoldingObject(scaffOptions);
             dispatch({
                 action: action.addScaffolding,
-                scaffold: scaffolding,
+                payload: scaffolding,
             });
-            navigation.navigate(routes.detail, { ids:[scaffolding.id] });
+            navigation.navigate(routes.detail, { ids: [scaffolding.id] });
+        } else {
+            setMissingFields(true);
         }
     };
 
@@ -150,15 +86,21 @@ export default function AddScaffolding({ navigation }) {
                         <Text style={styles.formFieldTxt}>Project title:</Text>
                         <TextInput
                             autoCorrect={false}
-                            value={title}
-                            onEndEditing={validateTitle}
-                            onChangeText={(text) => setTitle(text)}
+                            value={form.title}
+                            onChangeText={(text) =>
+                                formHandler({
+                                    change: field.title,
+                                    payload: text,
+                                })
+                            }
                             style={styles.formTextInput}
                             placeholder="Title..."
                             placeholderTextColor={"purple"}
                         />
-                        {titleError !== "" && (
-                            <Text style={styles.formError}>{titleError}</Text>
+                        {form.titleError && (
+                            <Text style={styles.formError}>
+                                {form.titleError}
+                            </Text>
                         )}
                     </View>
                     <View style={styles.formField}>
@@ -167,17 +109,29 @@ export default function AddScaffolding({ navigation }) {
                         </Text>
                         <TextInput
                             keyboardType="number-pad"
-                            value={height}
-                            onEndEditing={validateHeight}
-                            onChangeText={(number) => setHeight(number)}
+                            value={form.height}
+                            onChangeText={(text) =>
+                                formHandler({
+                                    change: field.height,
+                                    payload: text,
+                                })
+                            }
+                            onEndEditing={() =>
+                                formHandler({
+                                    change: field.adjustHeight,
+                                    payload: form.height,
+                                })
+                            }
                             autoCorrect={false}
                             style={styles.formTextInput}
                             placeholderTextColor={"purple"}
                             placeholder="Height in meters..."
                         />
-                        {heightError !== "" && (
-                            <Text style={styles.formError}>{heightError}</Text>
-                        )}
+                        {form.heightError ? (
+                            <Text style={styles.formError}>
+                                {form.heightError}
+                            </Text>
+                        ) : null}
                     </View>
                     <View style={styles.formField}>
                         <Text style={styles.formFieldTxt}>
@@ -185,17 +139,29 @@ export default function AddScaffolding({ navigation }) {
                         </Text>
                         <TextInput
                             keyboardType="number-pad"
-                            value={width}
-                            onEndEditing={validateWidth}
-                            onChangeText={(number) => setWidth(number)}
+                            value={form.width}
+                            onEndEditing={() =>
+                                formHandler({
+                                    change: field.adjustWidth,
+                                    payload: form.width,
+                                })
+                            }
+                            onChangeText={(text) =>
+                                formHandler({
+                                    change: field.width,
+                                    payload: text,
+                                })
+                            }
                             autoCorrect={false}
                             style={styles.formTextInput}
                             placeholderTextColor={"purple"}
                             placeholder="Width in meters..."
                         />
-                        {widthError !== "" && (
-                            <Text style={styles.formError}>{widthError}</Text>
-                        )}
+                        {form.widthError ? (
+                            <Text style={styles.formError}>
+                                {form.widthError}
+                            </Text>
+                        ) : null}
                     </View>
                     <View style={styles.formField}>
                         <View>
@@ -209,13 +175,15 @@ export default function AddScaffolding({ navigation }) {
                                     Include stair tower?
                                 </Text>
                                 <Switch
-                                    value={stairs}
+                                    value={form.stairs}
                                     style={{
                                         borderColor: "white",
                                         borderWidth: 1,
                                         borderRadius: 16,
                                     }}
-                                    onValueChange={toggleStairs}
+                                    onValueChange={() =>
+                                        formHandler({ change: field.stairs })
+                                    }
                                 />
                             </View>
                         </View>
@@ -232,16 +200,23 @@ export default function AddScaffolding({ navigation }) {
                             </Text>
                             <Switch
                                 trackColor="#BCF"
-                                value={ladders}
+                                value={form.ladders}
                                 style={{
                                     borderColor: "white",
                                     borderWidth: 1,
                                     borderRadius: 16,
                                 }}
-                                onValueChange={toggleLadders}
+                                onValueChange={() =>
+                                    formHandler({ change: field.ladders })
+                                }
                             />
                         </View>
                     </View>
+                    {missingFields && (
+                        <Text style={styles.errorTxt}>
+                            One of more fields is empty
+                        </Text>
+                    )}
                     <CustomButton title="Create" onPress={handleCreate} />
                 </ScrollView>
             </View>
@@ -317,5 +292,10 @@ const styles = StyleSheet.create({
         flexDirection: "row",
         justifyContent: "space-evenly",
         width: "100%",
+    },
+    errorTxt: {
+        backgroundColor: "red",
+        color: "white",
+        padding: 5,
     },
 });

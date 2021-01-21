@@ -3,13 +3,16 @@ import { StyleSheet, View } from "react-native";
 import Header from "../components/Header";
 import ScaffoldingList from "../components/ScaffoldingList";
 import CustomButton from "../components/CustomButton";
-import { useStateValue } from "../StateProvider";
+import { useScaffold } from "../ScaffProvider/ScaffoldProvider";
 import { routes } from "../Routes";
 import { action } from "../Actions";
+import { auth, db } from "../firebase.service";
+import { useUser } from "../UserProvider/UserProvider";
 
 export default function HomeScreen({ navigation }) {
-    const [{ scaffoldings }, dispatch] = useStateValue();
+    const [{ scaffoldings }, dispatch] = useScaffold();
     const [isEditing, setIsEditing] = useState(false);
+    const [user, setUser] = useUser();
 
     const handleEdit = () => {
         setIsEditing((prev) => !prev);
@@ -18,7 +21,7 @@ export default function HomeScreen({ navigation }) {
     const handleDelete = (id) => {
         dispatch({
             action: action.deleteScaffolding,
-            id,
+            payload: id,
         });
     };
 
@@ -36,6 +39,13 @@ export default function HomeScreen({ navigation }) {
         }
     }, [scaffoldings]);
 
+    useEffect(() => {
+        auth.signInAnonymously()
+            .then(({ user }) => {
+                setUser({ uid: user.uid });
+            })
+            .catch((error) => console.log(error));
+    }, []);
     return (
         <View style={styles.container}>
             <View style={styles.content}>
