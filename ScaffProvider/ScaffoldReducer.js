@@ -6,6 +6,9 @@ export const initialScaffoldState = {
 
 export const reducer = (state, event) => {
     switch (event.action) {
+        case action.initialize:
+            const fetchedScaffoldings = event.payload;
+            return { ...state, scaffoldings: fetchedScaffoldings};
         case action.addScaffolding:
             const scaffold = event.payload;
             return {

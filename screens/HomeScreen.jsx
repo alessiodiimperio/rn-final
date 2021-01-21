@@ -1,28 +1,35 @@
 import React, { useState, useEffect } from "react";
-import { StyleSheet, View } from "react-native";
+import { ActivityIndicator, StyleSheet, View } from "react-native";
 import Header from "../components/Header";
 import ScaffoldingList from "../components/ScaffoldingList";
 import CustomButton from "../components/CustomButton";
 import { useScaffold } from "../ScaffProvider/ScaffoldProvider";
 import { routes } from "../Routes";
 import { action } from "../Actions";
-import { auth, db } from "../firebase.service";
-import { useUser } from "../UserProvider/UserProvider";
-
+import { useFirebase } from "../FirebaseProvider/FirebaseProvider";
+import { auth } from "../firebase.service";
 export default function HomeScreen({ navigation }) {
     const [{ scaffoldings }, dispatch] = useScaffold();
     const [isEditing, setIsEditing] = useState(false);
-    const [user, setUser] = useUser();
+    const [isLoading, setIsLoading] = useState(false);
+    const firebase = useFirebase();
 
     const handleEdit = () => {
         setIsEditing((prev) => !prev);
     };
 
     const handleDelete = (id) => {
-        dispatch({
-            action: action.deleteScaffolding,
-            payload: id,
-        });
+        setIsLoading(true)
+        firebase
+            .deleteScaffolding(id)
+            .then(() => {
+                dispatch({
+                    action: action.deleteScaffolding,
+                    payload: id,
+                });
+                setIsLoading(false)
+            })
+            .catch(console.log);
     };
 
     const displayTotal = () => {
@@ -40,14 +47,22 @@ export default function HomeScreen({ navigation }) {
     }, [scaffoldings]);
 
     useEffect(() => {
+        setIsLoading(true)
         auth.signInAnonymously()
-            .then(({ user }) => {
-                setUser({ uid: user.uid });
+            .then(() => {
+                firebase
+                    .getScaffoldings()
+                    .then((data) => {
+                        dispatch({ action: action.initialize, payload: data });
+                        setIsLoading(false)
+                    })
+                    .catch(console.log);
             })
-            .catch((error) => console.log(error));
+            .catch(console.log);
     }, []);
     return (
         <View style={styles.container}>
+            {isLoading && <ActivityIndicator style={styles.activity} color='purple' size='large' />}
             <View style={styles.content}>
                 <Header isEditing={isEditing} onEdit={handleEdit} />
                 <ScaffoldingList
@@ -73,5 +88,12 @@ const styles = StyleSheet.create({
         flex: 0.9,
         width: "100%",
         alignItems: "center",
+    },
+    activity: {
+        backgroundColor: "rgba(0, 0, 0, 0.5)",
+        zIndex:100,
+        position: "absolute",
+        width: "100%",
+        height: "100%",
     },
 });

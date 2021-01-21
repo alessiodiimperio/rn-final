@@ -3,7 +3,6 @@ import React from "react";
 import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 import { ScaffoldProvider } from "./ScaffProvider/ScaffoldProvider";
-import { FormProvider } from "./FormHook/useForm";
 import {
     initialScaffoldState,
     reducer as scaffoldReducer,
@@ -12,6 +11,7 @@ import { routes } from "./Routes";
 import HomeScreen from "./screens/HomeScreen";
 import AddScaffolding from "./screens/AddScaffolding";
 import ScaffoldingDetail from "./screens/ScaffoldingDetail";
+import { FirebaseProvider } from "./FirebaseProvider/FirebaseProvider";
 
 const Stack = createStackNavigator();
 
@@ -22,7 +22,7 @@ export default function App() {
             reducer={scaffoldReducer}
             initialState={initialScaffoldState}
         >
-            <UserProvider>
+            <FirebaseProvider>
                 <NavigationContainer>
                     <Stack.Navigator
                         initialRouteName={routes.home}
@@ -44,7 +44,7 @@ export default function App() {
                         />
                     </Stack.Navigator>
                 </NavigationContainer>
-            </UserProvider>
+            </FirebaseProvider>
         </ScaffoldProvider>
     );
 }

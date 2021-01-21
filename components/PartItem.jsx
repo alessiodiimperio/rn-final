@@ -1,12 +1,13 @@
 import React from "react";
 import { StyleSheet, Text, View, Image } from "react-native";
-
+import { getPartsImage } from "../RequiredImages";
 export default function PartItem({ part }) {
+    const partImage = getPartsImage(part.image)
     return (
         <View style={styles.container}>
             <Image
                 style={styles.image}
-                source={part.image}
+                source={partImage}
                 resizeMode="contain"
             />
             <View style={styles.titleContainer}>
@@ -27,9 +28,9 @@ const styles = StyleSheet.create({
         flexDirection: "row",
         alignItems: "center",
         backgroundColor: "white",
-        borderColor:'purple',
-        borderTopWidth:0.5,
-        borderBottomWidth:0.5,
+        borderColor: "purple",
+        borderTopWidth: 0.5,
+        borderBottomWidth: 0.5,
     },
     image: {
         height: 120,
@@ -47,7 +48,7 @@ const styles = StyleSheet.create({
         fontWeight: "bold",
     },
     qtyContainer: {
-        width:50,
+        width: 50,
         justifyContent: "center",
         alignItems: "center",
         textAlign: "center",

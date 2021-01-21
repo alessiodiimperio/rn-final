@@ -1,4 +1,5 @@
 export const action = {
+    initialize:"initialize_scaffoldings",
     addScaffolding: "add_scaffolding",
     deleteScaffolding: "delete_scaffolding",
 };

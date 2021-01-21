@@ -7,7 +7,7 @@ import { Feather } from "@expo/vector-icons";
 
 export default function ScaffoldingDetail({ route, navigation }) {
     const { ids } = route.params;
-    const [{ scaffoldings }, dispatch] = useScaffold();
+    const [{ scaffoldings }, _] = useScaffold();
 
     const reduceScaffolding = () => {
         if (ids.length > 1) {

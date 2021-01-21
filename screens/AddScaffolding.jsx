@@ -9,6 +9,7 @@ import {
     View,
     Image,
     KeyboardAvoidingView,
+    ActivityIndicator,
 } from "react-native";
 import { Feather } from "@expo/vector-icons";
 import ScaffBuilder from "../calculators/ScaffBuilder";
@@ -19,11 +20,15 @@ import { useScaffold } from "../ScaffProvider/ScaffoldProvider";
 import { useForm } from "../FormHook/useForm";
 import { action, field } from "../Actions";
 import { stairTowerExample, accessDeckExample } from "../RequiredImages";
+import { useFirebase } from "../FirebaseProvider/FirebaseProvider";
 
 export default function AddScaffolding({ navigation }) {
     const [_, dispatch] = useScaffold();
     const [form, formHandler] = useForm();
     const [missingFields, setMissingFields] = useState(false);
+    const [isLoading, setIsLoading] = useState(false);
+
+    const firebase = useFirebase();
 
     const onBack = () => {
         navigation.goBack();
@@ -39,6 +44,7 @@ export default function AddScaffolding({ navigation }) {
 
     const handleCreate = () => {
         if (validFields()) {
+            setIsLoading(true);
             setMissingFields(false);
             const scaffOptions = {
                 title: form.title,
@@ -50,11 +56,14 @@ export default function AddScaffolding({ navigation }) {
             };
 
             let scaffolding = ScaffBuilder.getScaffoldingObject(scaffOptions);
-            dispatch({
-                action: action.addScaffolding,
-                payload: scaffolding,
+            firebase.saveScaffolding(scaffolding).then(() => {
+                dispatch({
+                    action: action.addScaffolding,
+                    payload: scaffolding,
+                });
+                setIsLoading(false);
+                navigation.navigate(routes.detail, { ids: [scaffolding.id] });
             });
-            navigation.navigate(routes.detail, { ids: [scaffolding.id] });
         } else {
             setMissingFields(true);
         }
@@ -65,6 +74,13 @@ export default function AddScaffolding({ navigation }) {
             style={styles.container}
             behavior={Platform.OS === "ios" ? "height" : "height"}
         >
+            {isLoading && (
+                <ActivityIndicator
+                    style={styles.activity}
+                    color="purple"
+                    size="large"
+                />
+            )}
             <View style={styles.content}>
                 <View style={styles.header}>
                     <TouchableOpacity style={styles.backBtn} onPress={onBack}>
@@ -297,5 +313,12 @@ const styles = StyleSheet.create({
         backgroundColor: "red",
         color: "white",
         padding: 5,
+    },
+    activity: {
+        backgroundColor: "rgba(0, 0, 0, 0.5)",
+        zIndex: 100,
+        position: "absolute",
+        width: "100%",
+        height: "100%",
     },
 });
