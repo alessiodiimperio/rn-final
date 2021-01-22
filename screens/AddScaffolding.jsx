@@ -55,14 +55,13 @@ export default function AddScaffolding({ navigation }) {
             };
 
             let scaffolding = ScaffBuilder.getScaffoldingObject(scaffOptions);
-            firebase.saveScaffolding(scaffolding).then((id) => {
-                dispatch({
-                    action: action.addScaffolding,
-                    payload: { ...scaffolding, id },
-                });
-                setIsLoading(false);
-                navigation.navigate(routes.detail, { ids: [id] });
-            });
+            firebase
+                .saveScaffolding(scaffolding)
+                .then((id) => {
+                    setIsLoading(false);
+                    navigation.navigate(routes.detail, { ids: [id] });
+                })
+                .catch(console.log);
         } else {
             setMissingFields(true);
         }

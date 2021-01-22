@@ -18,14 +18,12 @@ export default function HomeScreen({ navigation }) {
         setIsEditing((prev) => !prev);
     };
 
-    const handleDelete = async (id) => {
+    const handleDelete = (id) => {
         setIsLoading(true);
-        await firebase.deleteScaffolding(id);
-        dispatch({
-            action: action.deleteScaffolding,
-            payload: id,
-        });
-        setIsLoading(false);
+        firebase
+            .deleteScaffolding(id)
+            .then(() => setIsLoading(false))
+            .catch(console.log);
     };
 
     const displayTotal = () => {
@@ -44,15 +42,18 @@ export default function HomeScreen({ navigation }) {
 
     useEffect(() => {
         setIsLoading(true);
-        auth.signInAnonymously().then(() => {
-            firebase.getScaffoldings().then((scaffoldings) => {
-                dispatch({
-                    action: action.initialize,
-                    payload: scaffoldings,
+        auth.signInAnonymously()
+            .then(() => {
+                firebase.subscribeForScaffoldings((data) => {
+                    dispatch({
+                        action: action.initialize,
+                        payload: data,
+                    });
+                    setIsLoading(false);
                 });
-                setIsLoading(false);
-            });
-        });
+            })
+            .catch(console.log);
+        return firebase.unsubscribe();
     }, []);
     return (
         <View style={styles.container}>

@@ -4,26 +4,22 @@ import { auth, db } from "../firebase.service";
 const FirebaseContext = createContext();
 
 export const FirebaseProvider = ({ children }) => {
+    let unsubscribe = () => {};
     const firebase = {
-        getScaffoldings: async () => {
-            return new Promise((resolve, reject) => {
-                db.collection(`${auth.currentUser.uid}`)
-                    .get()
-                    .then((snapshot) => {
-                        let documents = [];
-                        snapshot.forEach((doc) => {
-                            documents.push(doc.data());
-                        });
-                        resolve(documents);
-                    })
-                    .catch(reject);
-            });
+        subscribeForScaffoldings: (callback) => {
+            unsubscribe = db.collection(`${auth.currentUser.uid}`).onSnapshot(
+                (snap) => {
+                    let documents = [];
+                    snap.forEach((doc) => documents.push(doc.data()));
+                    callback(documents);
+                },
+                (error) => console.log(error)
+            );
         },
+        unsubscribe: () => unsubscribe(),
         saveScaffolding: async (scaffold) => {
             return new Promise((resolve, reject) => {
-                const scaffRef = db
-                    .collection(`${auth.currentUser.uid}`)
-                    .doc();
+                const scaffRef = db.collection(`${auth.currentUser.uid}`).doc();
                 scaffRef
                     .set({ ...scaffold, id: scaffRef.id })
                     .then(() => resolve(scaffRef.id))
@@ -40,7 +36,6 @@ export const FirebaseProvider = ({ children }) => {
             });
         },
     };
-
     return (
         <FirebaseContext.Provider value={firebase}>
             {children}

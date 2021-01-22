@@ -8,19 +8,7 @@ export const reducer = (state, event) => {
     switch (event.action) {
         case action.initialize:
             const fetchedScaffoldings = event.payload;
-            return { ...state, scaffoldings: fetchedScaffoldings};
-        case action.addScaffolding:
-            const scaffold = event.payload;
-            return {
-                ...state,
-                scaffoldings: [...state.scaffoldings, scaffold],
-            };
-        case action.deleteScaffolding:
-            const id = event.payload;
-            const mutatedScaffoldings = state.scaffoldings.filter(
-                (scaffold) => scaffold.id != id
-            );
-            return { ...state, scaffoldings: mutatedScaffoldings };
+            return { ...state, scaffoldings: fetchedScaffoldings };
         default:
             return state;
     }
