@@ -43,16 +43,16 @@ export default function HomeScreen({ navigation }) {
     }, [scaffoldings]);
 
     useEffect(() => {
-        async () => {
-            setIsLoading(true);
-            await auth.signInAnonymously();
-            const scaffoldings = await firebase.getScaffoldings();
-            dispatch({
-                action: action.initialize,
-                payload: scaffoldings,
+        setIsLoading(true);
+        auth.signInAnonymously().then(() => {
+            firebase.getScaffoldings().then((scaffoldings) => {
+                dispatch({
+                    action: action.initialize,
+                    payload: scaffoldings,
+                });
+                setIsLoading(false);
             });
-            setIsLoading(false);
-        };
+        });
     }, []);
     return (
         <View style={styles.container}>
