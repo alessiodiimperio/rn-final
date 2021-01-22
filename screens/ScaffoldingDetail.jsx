@@ -1,7 +1,6 @@
 import React from "react";
 import { StyleSheet, Text, View, TouchableOpacity } from "react-native";
 import PartsList from "../components/PartsList";
-import PartsInformation from "../components/PartsInformation";
 import { useScaffold } from "../ScaffProvider/ScaffoldProvider";
 import { Feather } from "@expo/vector-icons";
 
@@ -9,14 +8,14 @@ export default function ScaffoldingDetail({ route, navigation }) {
     const { ids } = route.params;
     const [{ scaffoldings }, _] = useScaffold();
 
-    const reduceScaffolding = () => {
+    const reduceScaffoldings = () => {
         if (ids.length > 1) {
             let parts = [];
             let scaffolding;
 
             ids.forEach((id) => {
                 const scaffold = scaffoldings.find(
-                    (scaffold) => scaffold.id == id
+                    (scaffold) => scaffold.id === id
                 );
                 scaffold.parts.forEach((part) => {
                     if (parts.some((item) => item.tag === part.tag)) {
@@ -38,7 +37,7 @@ export default function ScaffoldingDetail({ route, navigation }) {
         }
     };
 
-    const scaffolding = reduceScaffolding();
+    const scaffolding = reduceScaffoldings();
 
     const onBack = () => {
         navigation.popToTop();

@@ -25,10 +25,9 @@ import { useFirebase } from "../FirebaseProvider/FirebaseProvider";
 export default function AddScaffolding({ navigation }) {
     const [_, dispatch] = useScaffold();
     const [form, formHandler] = useForm();
+    const firebase = useFirebase();
     const [missingFields, setMissingFields] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
-
-    const firebase = useFirebase();
 
     const onBack = () => {
         navigation.goBack();
@@ -56,13 +55,13 @@ export default function AddScaffolding({ navigation }) {
             };
 
             let scaffolding = ScaffBuilder.getScaffoldingObject(scaffOptions);
-            firebase.saveScaffolding(scaffolding).then(() => {
+            firebase.saveScaffolding(scaffolding).then((id) => {
                 dispatch({
                     action: action.addScaffolding,
-                    payload: scaffolding,
+                    payload: { ...scaffolding, id },
                 });
                 setIsLoading(false);
-                navigation.navigate(routes.detail, { ids: [scaffolding.id] });
+                navigation.navigate(routes.detail, { ids: [id] });
             });
         } else {
             setMissingFields(true);

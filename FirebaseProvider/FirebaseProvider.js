@@ -1,4 +1,4 @@
-import React, { useContext, createContext, useState } from "react";
+import React, { useContext, createContext } from "react";
 import { auth, db } from "../firebase.service";
 
 const FirebaseContext = createContext();
@@ -21,10 +21,12 @@ export const FirebaseProvider = ({ children }) => {
         },
         saveScaffolding: async (scaffold) => {
             return new Promise((resolve, reject) => {
-                db.collection(`${auth.currentUser.uid}`)
-                    .doc(scaffold.id)
-                    .set(scaffold)
-                    .then(resolve)
+                const scaffRef = db
+                    .collection(`${auth.currentUser.uid}`)
+                    .doc();
+                scaffRef
+                    .set({ ...scaffold, id: scaffRef.id })
+                    .then(() => resolve(scaffRef.id))
                     .catch(reject);
             });
         },

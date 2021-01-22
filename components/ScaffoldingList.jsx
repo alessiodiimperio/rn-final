@@ -15,12 +15,12 @@ export default function ScaffoldingList({
                 data={scaffoldings}
                 renderItem={({ item }) => (
                     <ScaffoldListItem
-                        key={item.id}
                         item={item}
                         isEditing={isEditing}
                         handleDelete={handleDelete}
                     />
                 )}
+                keyExtractor={(item) => item.id}
                 ItemSeparatorComponent={() => <View style={styles.separator} />}
                 footer={() => <View style={styles.separator} />}
             />

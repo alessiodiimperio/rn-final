@@ -7,7 +7,6 @@ import { routes } from "../Routes";
 
 export default function Header({ isEditing, onEdit }) {
     const navigation = useNavigation();
-
     return (
         <View style={styles.container}>
             <Text style={styles.headerText}>Scaffoldings</Text>

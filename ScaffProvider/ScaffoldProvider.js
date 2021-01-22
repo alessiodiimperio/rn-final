@@ -1,9 +1,13 @@
 import React, { createContext, useContext, useReducer } from "react";
+import {
+    initialScaffoldState,
+    reducer,
+} from "./ScaffoldReducer";
 
-export const ScaffoldContext = createContext();
+const ScaffoldContext = createContext();
 
-export const ScaffoldProvider = ({ reducer, initialState, children }) => (
-    <ScaffoldContext.Provider value={useReducer(reducer, initialState)}>
+export const ScaffoldProvider = ({children}) => (
+    <ScaffoldContext.Provider value={useReducer(reducer, initialScaffoldState)}>
         {children}
     </ScaffoldContext.Provider>
 );

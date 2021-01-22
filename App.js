@@ -3,10 +3,6 @@ import React from "react";
 import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 import { ScaffoldProvider } from "./ScaffProvider/ScaffoldProvider";
-import {
-    initialScaffoldState,
-    reducer as scaffoldReducer,
-} from "./ScaffProvider/ScaffoldReducer";
 import { routes } from "./Routes";
 import HomeScreen from "./screens/HomeScreen";
 import AddScaffolding from "./screens/AddScaffolding";
@@ -18,10 +14,7 @@ const Stack = createStackNavigator();
 console.log("App Initializing...");
 export default function App() {
     return (
-        <ScaffoldProvider
-            reducer={scaffoldReducer}
-            initialState={initialScaffoldState}
-        >
+        <ScaffoldProvider>
             <FirebaseProvider>
                 <NavigationContainer>
                     <Stack.Navigator

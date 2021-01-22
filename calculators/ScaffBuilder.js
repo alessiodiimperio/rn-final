@@ -1,5 +1,4 @@
 import ScaffCalc from "./ScaffoldingCalculator";
-var uuid = require("react-native-uuid");
 const strings = {
     //Parts
     parts_starting_collars_title: "Starting collar",
@@ -66,7 +65,6 @@ class ScaffBuilder {
             farfromwall,
         } = scaffOptions;
         return {
-            id: uuid.v4(),
             type: "scaffolding",
             title: title,
             height: height,

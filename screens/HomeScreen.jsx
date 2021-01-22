@@ -18,18 +18,14 @@ export default function HomeScreen({ navigation }) {
         setIsEditing((prev) => !prev);
     };
 
-    const handleDelete = (id) => {
-        setIsLoading(true)
-        firebase
-            .deleteScaffolding(id)
-            .then(() => {
-                dispatch({
-                    action: action.deleteScaffolding,
-                    payload: id,
-                });
-                setIsLoading(false)
-            })
-            .catch(console.log);
+    const handleDelete = async (id) => {
+        setIsLoading(true);
+        await firebase.deleteScaffolding(id);
+        dispatch({
+            action: action.deleteScaffolding,
+            payload: id,
+        });
+        setIsLoading(false);
     };
 
     const displayTotal = () => {
@@ -47,22 +43,26 @@ export default function HomeScreen({ navigation }) {
     }, [scaffoldings]);
 
     useEffect(() => {
-        setIsLoading(true)
-        auth.signInAnonymously()
-            .then(() => {
-                firebase
-                    .getScaffoldings()
-                    .then((data) => {
-                        dispatch({ action: action.initialize, payload: data });
-                        setIsLoading(false)
-                    })
-                    .catch(console.log);
-            })
-            .catch(console.log);
+        async () => {
+            setIsLoading(true);
+            await auth.signInAnonymously();
+            const scaffoldings = await firebase.getScaffoldings();
+            dispatch({
+                action: action.initialize,
+                payload: scaffoldings,
+            });
+            setIsLoading(false);
+        };
     }, []);
     return (
         <View style={styles.container}>
-            {isLoading && <ActivityIndicator style={styles.activity} color='purple' size='large' />}
+            {isLoading && (
+                <ActivityIndicator
+                    style={styles.activity}
+                    color="purple"
+                    size="large"
+                />
+            )}
             <View style={styles.content}>
                 <Header isEditing={isEditing} onEdit={handleEdit} />
                 <ScaffoldingList
@@ -91,7 +91,7 @@ const styles = StyleSheet.create({
     },
     activity: {
         backgroundColor: "rgba(0, 0, 0, 0.5)",
-        zIndex:100,
+        zIndex: 100,
         position: "absolute",
         width: "100%",
         height: "100%",

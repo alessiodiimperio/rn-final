@@ -3,6 +3,7 @@ import { StyleSheet, Text, View } from "react-native";
 import { Octicons } from "@expo/vector-icons"; 
 import { FontAwesome5 } from "@expo/vector-icons"; 
 export default function PartsInformation({ parts }) {
+    
     const numberOfParts = parts.reduce((acc, curr) => {
         return (acc += curr.qty);
     }, 0);

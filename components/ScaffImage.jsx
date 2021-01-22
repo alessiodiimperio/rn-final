@@ -1,5 +1,5 @@
 import React from "react";
-import { StyleSheet, Image, View } from "react-native";
+import { Image } from "react-native";
 import { getSectionImage } from "../RequiredImages";
 
 function ScaffImage({
@@ -13,7 +13,6 @@ function ScaffImage({
     hasLadders,
     size,
 }) {
-    //Magic Numbers to words with meaning
     const bottomLevel = 1;
     const topLevel = totalLevels;
     const firstSection = 1;
