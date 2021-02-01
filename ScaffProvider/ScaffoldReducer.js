@@ -1,3 +1,4 @@
+import { FlatList } from "react-native-gesture-handler";
 import { action } from "../Actions";
 
 export const initialScaffoldState = {
